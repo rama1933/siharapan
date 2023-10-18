@@ -1,0 +1,57 @@
+[
+ {
+  "komoditi_id": 1,
+  "nama": "Lokal",
+  "satuan_id": 1
+ },
+ {
+  "komoditi_id": 2,
+  "nama": "Pipilan Lokal",
+  "satuan_id": 2
+ },
+ {
+  "komoditi_id": 3,
+  "nama": "Bawang Merah",
+  "satuan_id": 2
+ },
+ {
+  "komoditi_id": 3,
+  "nama": "Bawang Putih",
+  "satuan_id": 2
+ },
+ {
+  "komoditi_id": 4,
+  "nama": "Merah Besar",
+  "satuan_id": 2
+ },
+ {
+  "komoditi_id": 4,
+  "nama": "Rawit",
+  "satuan_id": 2
+ },
+ {
+  "komoditi_id":5,
+  "nama": "Sapi",
+  "satuan_id": 2
+ },
+ {
+  "komoditi_id": 5,
+  "nama": "Ayam Ras",
+  "satuan_id": 2
+ },
+ {
+  "komoditi_id": 6,
+  "nama": "Ayam Ras",
+  "satuan_id": 2
+ },
+ {
+  "komoditi_id": 7,
+  "nama": "Putih",
+  "satuan_id": 2
+ },
+ {
+  "komoditi_id": 8,
+  "nama": "Kemasan",
+  "satuan_id": 1
+ }
+]

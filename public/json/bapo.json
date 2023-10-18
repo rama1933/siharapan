@@ -1,0 +1,292 @@
+[
+ {
+  "nama": "Bawang Merah",
+  "satuan": 1,
+  "komoditi": 19
+ },
+ {
+  "nama": "Bawang Prei",
+  "satuan": 1,
+  "komoditi": 16
+ },
+ {
+  "nama": "Bawang Putih",
+  "satuan": 1,
+  "komoditi": 20
+ },
+ {
+  "nama": "Beras Jawa",
+  "satuan": 3,
+  "komoditi": 1
+ },
+ {
+  "nama": "Beras Ketan",
+  "satuan": 3,
+  "komoditi": 1
+ },
+ {
+  "nama": "Bimoli",
+  "satuan": 3,
+  "komoditi": 3
+ },
+ {
+  "nama": "Bogasari",
+  "satuan": 1,
+  "komoditi": 8
+ },
+ {
+  "nama": "Bubuk Dancow 400 gr",
+  "satuan": 15,
+  "komoditi": 6
+ },
+ {
+  "nama": "Bubuk Nestle 400 gr",
+  "satuan": 15,
+  "komoditi": 6
+ },
+ {
+  "nama": "Cabe Hijau Besar",
+  "satuan": 1,
+  "komoditi": 21
+ },
+ {
+  "nama": "Cabe Merah Besar",
+  "satuan": 1,
+  "komoditi": 21
+ },
+ {
+  "nama": "Cabe Rawit",
+  "satuan": 1,
+  "komoditi": 21
+ },
+ {
+  "nama": "Cihirang (jenis R)",
+  "satuan": 3,
+  "komoditi": 1
+ },
+ {
+  "nama": "Daging Ayam Kampung",
+  "satuan": 6,
+  "komoditi": 4
+ },
+ {
+  "nama": "Daging Ayam Ras",
+  "satuan": 1,
+  "komoditi": 4
+ },
+ {
+  "nama": "Daging Sapi Murni",
+  "satuan": 1,
+  "komoditi": 4
+ },
+ {
+  "nama": "Garam Halus Beryodium",
+  "satuan": 1,
+  "komoditi": 7
+ },
+ {
+  "nama": "Gas 12 kg",
+  "satuan": 12,
+  "komoditi": 14
+ },
+ {
+  "nama": "Gas 3 kg",
+  "satuan": 12,
+  "komoditi": 14
+ },
+ {
+  "nama": "Gas 5,5 kg",
+  "satuan": 12,
+  "komoditi": 14
+ },
+ {
+  "nama": "Gula Merah",
+  "satuan": 1,
+  "komoditi": 2
+ },
+ {
+  "nama": "Ikan Asin Gabus",
+  "satuan": 1,
+  "komoditi": 11
+ },
+ {
+  "nama": "Ikan Asin Sapat",
+  "satuan": 1,
+  "komoditi": 11
+ },
+ {
+  "nama": "Ikan Asin Telang",
+  "satuan": 1,
+  "komoditi": 11
+ },
+ {
+  "nama": "Ikan Asin Teri",
+  "satuan": 1,
+  "komoditi": 11
+ },
+ {
+  "nama": "Ikan Haruan (gabus)",
+  "satuan": 1,
+  "komoditi": 15
+ },
+ {
+  "nama": "Ikan Mas",
+  "satuan": 1,
+  "komoditi": 15
+ },
+ {
+  "nama": "Ikan Nila",
+  "satuan": 1,
+  "komoditi": 15
+ },
+ {
+  "nama": "Ikan Papuyu",
+  "satuan": 1,
+  "komoditi": 15
+ },
+ {
+  "nama": "Ikan Patin",
+  "satuan": 1,
+  "komoditi": 15
+ },
+ {
+  "nama": "Indomie Goreng",
+  "satuan": 11,
+  "komoditi": 10
+ },
+ {
+  "nama": "Indomie Kari Ayam",
+  "satuan": 11,
+  "komoditi": 10
+ },
+ {
+  "nama": "Indomie Soto Banjar",
+  "satuan": 11,
+  "komoditi": 10
+ },
+ {
+  "nama": "Kacang Hijau",
+  "satuan": 1,
+  "komoditi": 12
+ },
+ {
+  "nama": "Kacang Kedelai",
+  "satuan": 1,
+  "komoditi": 9
+ },
+ {
+  "nama": "Kacang Tanah EX IMPOR",
+  "satuan": 1,
+  "komoditi": 13
+ },
+ {
+  "nama": "Kacang Tanah LOKAL",
+  "satuan": 1,
+  "komoditi": 13
+ },
+ {
+  "nama": "Kelapa",
+  "satuan": 9,
+  "komoditi": 18
+ },
+ {
+  "nama": "Kental Manis Bendera",
+  "satuan": 10,
+  "komoditi": 6
+ },
+ {
+  "nama": "Kental Manis Indomilk",
+  "satuan": 10,
+  "komoditi": 6
+ },
+ {
+  "nama": "Ketela Pohon\/Singkong",
+  "satuan": 1,
+  "komoditi": 17
+ },
+ {
+  "nama": "Kunci Mas",
+  "satuan": 3,
+  "komoditi": 3
+ },
+ {
+  "nama": "Lencana Merah",
+  "satuan": 1,
+  "komoditi": 8
+ },
+ {
+  "nama": "Mie Sedap",
+  "satuan": 11,
+  "komoditi": 10
+ },
+ {
+  "nama": "Premium",
+  "satuan": 1,
+  "komoditi": 2
+ },
+ {
+  "nama": "Putih",
+  "satuan": 1,
+  "komoditi": 2
+ },
+ {
+  "nama": "Sarimie",
+  "satuan": 11,
+  "komoditi": 10
+ },
+ {
+  "nama": "Segitiga Biru",
+  "satuan": 1,
+  "komoditi": 8
+ },
+ {
+  "nama": "Siam Banjar",
+  "satuan": 3,
+  "komoditi": 1
+ },
+ {
+  "nama": "Sovia",
+  "satuan": 3,
+  "komoditi": 3
+ },
+ {
+  "nama": "Tanpa Merek",
+  "satuan": 3,
+  "komoditi": 3
+ },
+ {
+  "nama": "Telor Ayam Kampung",
+  "satuan": 9,
+  "komoditi": 5
+ },
+ {
+  "nama": "Telor Ayam Ras",
+  "satuan": 1,
+  "komoditi": 5
+ },
+ {
+  "nama": "Telor Itik",
+  "satuan": 9,
+  "komoditi": 5
+ },
+ {
+  "nama": "Tepung Terigu",
+  "satuan": 1,
+  "komoditi": 8
+ },
+ {
+  "nama": "Tropical",
+  "satuan": 3,
+  "komoditi": 3
+ },
+ {
+  "nama": "Unus Mayang",
+  "satuan": 3,
+  "komoditi": 1
+ },
+ {
+  "nama": "Unus Mutiara",
+  "satuan": 3,
+  "komoditi": 1
+ }
+]
