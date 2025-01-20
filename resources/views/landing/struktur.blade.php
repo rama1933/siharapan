@@ -146,7 +146,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="news_taital_box">
-                            <img src="{{ asset('') }}logo/struktur.jpg" alt="">
+                            <img src="{{ asset('') }}logo/sto.jpeg" alt="">
                             {{-- <p class="date_text">01 Jan 2020</p>
                             <h4 class="make_text">Make it Simple</h4> --}}
                             {{-- <p class="post_text">Post By : Casinal</p> --}}
