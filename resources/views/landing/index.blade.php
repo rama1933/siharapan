@@ -227,6 +227,10 @@
                                 <a href="{{ url('') }}/excel" title="Unduh Dokumen (Excel)"
                                     class="btn btn-md btn-outline-success mb-3"><i class="fa fa-print">
                                         Cetak Excel</i></a>
+                                @if (isset($tanggal_update))
+                                    <p class="float-right">Tanggal Update Data
+                                        : {{ date('d-m-Y', strtotime($tanggal_update->tanggal)) }}</p>
+                                @endif
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped  table-md" id="table">
                                         <thead>
