@@ -17,9 +17,9 @@ class HargaService
     function getDataHargaKandangan($id = null)
     {
         if ($id === null) {
-            $data = HargaKandangan::all();
+            $data = HargaKandangan::orderBy('tanggal', 'desc')->get();
         } else {
-            $data =  HargaKandangan::where('id', $id)->first();
+            $data = HargaKandangan::where('id', $id)->first();
         }
         return $data;
     }
@@ -29,7 +29,7 @@ class HargaService
         if ($id === null) {
             $data = HargaNegara::all();
         } else {
-            $data =  HargaNegara::where('id', $id)->first();
+            $data = HargaNegara::where('id', $id)->first();
         }
         return $data;
     }
@@ -39,7 +39,7 @@ class HargaService
         if ($id === null) {
             $data = HargaTanjung::all();
         } else {
-            $data =  HargaTanjung::where('id', $id)->first();
+            $data = HargaTanjung::where('id', $id)->first();
         }
         return $data;
     }
@@ -49,7 +49,7 @@ class HargaService
         if ($id === null) {
             $data = HargaBjm::all();
         } else {
-            $data =  HargaBjm::where('id', $id)->first();
+            $data = HargaBjm::where('id', $id)->first();
         }
         return $data;
     }

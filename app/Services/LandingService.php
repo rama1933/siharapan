@@ -12,7 +12,7 @@ class LandingService
 {
     public function __construct()
     {
-    //
+        //
     }
     function getAll()
     {
@@ -41,57 +41,57 @@ class LandingService
 
         $data = $bapo->map(function ($bapo, $key) {
             return [
-            'id' => $bapo->id,
-            'nama_bapo' => $bapo->nama,
-            'satuan' => $bapo->satuan
+                'id' => $bapo->id,
+                'nama_bapo' => $bapo->nama,
+                'satuan' => $bapo->satuan
             ];
         });
 
         $data_kandangan = $harga->map(function ($harga, $key) {
             return [
-            'id' => $harga->id,
-            'nama' => $harga->jenis,
-            'harga_hari_ini_kandangan' => $harga->harga_hari_ini,
-            'harga_kemarin_kandangan' => $harga->harga_kemarin,
-            'perubahan_harga_kandangan' => $harga->perubahan_harga,
-            'perubahan_harga_persen_kandangan' => $harga->perubahan_harga_persen,
-            'komoditi' => $harga->nama,
-            'satuan' => $harga->satuan,
-            'tanggal_kandangan' => $harga->tanggal,
-            'persedian' => $harga->persedian
+                'id' => $harga->id,
+                'nama' => $harga->jenis,
+                'harga_hari_ini_kandangan' => $harga->harga_hari_ini,
+                'harga_kemarin_kandangan' => $harga->harga_kemarin,
+                'perubahan_harga_kandangan' => $harga->perubahan_harga,
+                'perubahan_harga_persen_kandangan' => $harga->perubahan_harga_persen,
+                'komoditi' => $harga->nama,
+                'satuan' => $harga->satuan,
+                'tanggal_kandangan' => $harga->tanggal,
+                'persedian' => $harga->persedian
             ];
         });
 
         $data_negara = $harga_negara->map(function ($harga, $key) {
             return [
-            'id' => $harga->id,
-            'nama_harga_negara' => $harga->jenis,
-            'harga_hari_ini_negara' => $harga->harga_hari_ini,
-            'harga_kemarin_negara' => $harga->harga_kemarin,
-            'perubahan_harga_negara' => $harga->perubahan_harga,
-            'perubahan_harga_persen_negara' => $harga->perubahan_harga_persen,
+                'id' => $harga->id,
+                'nama_harga_negara' => $harga->jenis,
+                'harga_hari_ini_negara' => $harga->harga_hari_ini,
+                'harga_kemarin_negara' => $harga->harga_kemarin,
+                'perubahan_harga_negara' => $harga->perubahan_harga,
+                'perubahan_harga_persen_negara' => $harga->perubahan_harga_persen,
             ];
         });
 
         $data_tanjung = $harga_tanjung->map(function ($harga, $key) {
             return [
-            'id' => $harga->id,
-            'nama_harga_tanjung' => $harga->jenis,
-            'harga_hari_ini_tanjung' => $harga->harga_hari_ini,
-            'harga_kemarin_tanjung' => $harga->harga_kemarin,
-            'perubahan_harga_tanjung' => $harga->perubahan_harga,
-            'perubahan_harga_persen_tanjung' => $harga->perubahan_harga_persen,
+                'id' => $harga->id,
+                'nama_harga_tanjung' => $harga->jenis,
+                'harga_hari_ini_tanjung' => $harga->harga_hari_ini,
+                'harga_kemarin_tanjung' => $harga->harga_kemarin,
+                'perubahan_harga_tanjung' => $harga->perubahan_harga,
+                'perubahan_harga_persen_tanjung' => $harga->perubahan_harga_persen,
             ];
         });
 
         $data_bjm = $harga_bjm->map(function ($harga, $key) {
             return [
-            'id' => $harga->id,
-            'nama_harga_bjm' => $harga->jenis,
-            'harga_hari_ini_bjm' => $harga->harga_hari_ini,
-            'harga_kemarin_bjm' => $harga->harga_kemarin,
-            'perubahan_harga_bjm' => $harga->perubahan_harga,
-            'perubahan_harga_persen_bjm' => $harga->perubahan_harga_persen,
+                'id' => $harga->id,
+                'nama_harga_bjm' => $harga->jenis,
+                'harga_hari_ini_bjm' => $harga->harga_hari_ini,
+                'harga_kemarin_bjm' => $harga->harga_kemarin,
+                'perubahan_harga_bjm' => $harga->perubahan_harga,
+                'perubahan_harga_persen_bjm' => $harga->perubahan_harga_persen,
             ];
         });
 

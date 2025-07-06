@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Services\BeritaServices;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
-use App\Services\BeritaServices;
 
 class BeritaController extends Controller
 {
@@ -23,38 +24,33 @@ class BeritaController extends Controller
 
     public function data(Request $request)
     {
-        switch ($request->type) {
-            case 'berita':
-                $data = $this->service->getDataBerita();
-                break;
-            default:
-                $data = collect();
-                break;
-        }
+        $data = $this->service->getDataBerita();
+
 
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('foto', function ($row) {
+                // Membuat kolom foto dengan tag <img>
+                $url = asset($row->path);
+                return '<img src="' . $url . '" border="0" width="100" class="img-fluid rounded" align="center" />';
+            })
+            ->editColumn('berita', function ($row) {
+                // Memotong teks berita agar tidak terlalu panjang di tabel
+                return Str::limit(strip_tags($row->berita), 50, '...');
+            })
+            ->addColumn('button', function ($row) {
+                // Membuat tombol Edit dan Hapus
+                // $editBtn = '<button onclick="editBerita(' . $row->id . ')" class="p-2 text-yellow-500 hover:text-yellow-700 transition-colors" title="Edit">
+                //                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg>
+                //             </button>';
+    
+                $deleteBtn = '<button onclick="deleteBerita(' . $row->id . ')" class="p-2 text-red-500 hover:text-red-700 transition-colors" title="Hapus">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                             </button>';
 
-            ->addColumn('button', function ($data) use ($request) {
-            return '
-                                        <button onclick="edit(' . $data->id . ')" data-toggle="modal" data-target="#modal-edit" class="btn btn-sm btn-flat btn-primary my-2"><i class="fa fa-edit"></i></button>
-                                        <button onclick="deletebtn(' . $data->id . ')" class="btn btn-sm btn-flat btn-danger my-2"><i class="fa fa-trash"></i></button>
-                                    ';
-        })
-            ->addColumn('foto', function ($data) use ($request) {
-            if ($data == null) {
-                $foto = '';
-            }
-            else {
-                $foto = '
-                  <a class="profile-img" href="' . asset('/storage') . '/' . $data->path . '" target="_blank">
-                                        <img style="border-radius: 10px" width="50px" src="' . asset('/storage') . '/' . $data->path . '" target="_blank" alt="product">
-                                    </a>
-                                    ';
-            }
-            return $foto;
-        })
-            ->rawColumns(['button', 'foto'])
+                return '<div class="flex items-center">' . $deleteBtn . '</div>';
+            })
+            ->rawColumns(['foto', 'button']) // Memberitahu DataTables untuk tidak meng-escape HTML
             ->make(true);
     }
 
@@ -71,12 +67,12 @@ class BeritaController extends Controller
         }
         if ($request->type == 'berita') {
             return response()->json(
-            [
-                'id' => $data->id,
-                'judul' => $data->judul,
-                'berita' => $data->berita,
-                'path' => $data->path,
-            ]
+                [
+                    'id' => $data->id,
+                    'judul' => $data->judul,
+                    'berita' => $data->berita,
+                    'path' => $data->path,
+                ]
             );
         }
     }
@@ -90,8 +86,7 @@ class BeritaController extends Controller
                 "status" => "success",
                 "messages" => "Berhasil Menghapus Data",
             ]);
-        }
-        else {
+        } else {
             return response()->json([
                 "status" => "failed",
                 "messages" => "Gagal Menghapus Data",
@@ -111,16 +106,14 @@ class BeritaController extends Controller
                 "status" => "failed",
                 "message" => $validator->errors()->first(),
             ]);
-        }
-        else {
+        } else {
             $store = $this->service->storeBerita($request);
             if ($store == true) {
                 return response()->json([
                     "status" => "success",
                     "messages" => "Berhasil Menambahkan Data",
                 ]);
-            }
-            else {
+            } else {
                 return response()->json([
                     "status" => "failed",
                     "messages" => "Gagal Menambahkan Data",
@@ -142,16 +135,14 @@ class BeritaController extends Controller
                 "status" => "failed",
                 "message" => $validator->errors()->first(),
             ]);
-        }
-        else {
+        } else {
             $store = $this->service->updateBerita($id, $request->all());
             if ($store == true) {
                 return response()->json([
                     "status" => "success",
                     "messages" => "Berhasil memperbaharui Data",
                 ]);
-            }
-            else {
+            } else {
                 return response()->json([
                     "status" => "failed",
                     "messages" => "Gagal memperbaharui Data",

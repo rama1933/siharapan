@@ -11,4 +11,11 @@ class Komoditi extends Model
     protected $connection = 'mysql';
     protected $table = 'tbl_master_komoditi';
     protected $guarded = [''];
+
+    public function komoditi()
+    {
+        return $this->belongsTo(Bapo::class, 'komoditi_id', 'id');
+    }
 }
+
+
