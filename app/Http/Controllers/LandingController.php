@@ -122,8 +122,9 @@ class LandingController extends Controller
             DB::raw('DATE(tanggal) as tanggal_grup'),
             DB::raw('AVG(harga_terendah) as harga_rata_rata')
         )
-            ->where('nama', $bahanPokok->nama)
-            ->where('jenis', $bahanPokok->jenis)
+            // ->where('nama', $bahanPokok->nama)
+            // ->where('jenis', $bahanPokok->jenis)
+            ->where('bapo_id', $bahanPokok->id)
             ->groupBy('tanggal_grup')
             ->orderBy('tanggal_grup', 'ASC');
 
@@ -343,8 +344,7 @@ class LandingController extends Controller
         $bahanPokok = HargaKandangan::findOrFail($id);
 
         $query = HargaKandangan::query()
-            ->where('nama', $bahanPokok->nama)
-            ->where('jenis', $bahanPokok->jenis);
+            ->where('bapo_id', $bahanPokok->id);
 
         // Terapkan filter rentang tanggal jika ada
         if ($request->filled('start_date') && $request->filled('end_date')) {
@@ -412,8 +412,8 @@ class LandingController extends Controller
     {
         $komoditas = HargaKandangan::findOrFail($id);
         $query = HargaKandangan::query()
-            ->where('nama', $komoditas->nama)
-            ->where('jenis', $komoditas->jenis);
+            // ->where('nama', $komoditas->nama)
+            ->where('bapo_id', $komoditas->id);
 
         if ($request->filled('start_date') && $request->filled('end_date')) {
             $query->whereBetween('tanggal', [$request->input('start_date'), $request->input('end_date')]);

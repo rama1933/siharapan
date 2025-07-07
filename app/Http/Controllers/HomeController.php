@@ -67,8 +67,8 @@ class HomeController extends Controller
             DB::raw('DATE(tanggal) as tanggal_grup'),
             DB::raw('AVG(harga_terendah) as harga_rata_rata')
         )
-            ->where('nama', $bahanPokok->nama)
-            ->where('jenis', $bahanPokok->jenis)
+            // ->where('nama', $bahanPokok->nama)
+            ->where('bapo_id', $bahanPokok->id)
             ->groupBy('tanggal_grup')
             ->orderBy('tanggal_grup', 'ASC');
 
