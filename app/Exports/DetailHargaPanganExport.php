@@ -33,8 +33,7 @@ class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMappi
     public function collection()
     {
         $query = HargaKandangan::query()
-            ->where('nama', $this->komoditas->nama)
-            ->where('jenis', $this->komoditas->jenis);
+            ->where('bapo_id', $this->komoditas->id);
 
         if ($this->startDate && $this->endDate) {
             $query->whereBetween('tanggal', [$this->startDate, $this->endDate]);
@@ -58,8 +57,9 @@ class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMappi
                 'Nama Komoditas',
                 'Jenis',
                 'Satuan',
-                'Harga',
-                'Persediaan',
+                'Harga Eceran',
+                'Harga Grosit',
+                'Harga Kios Pagan',
             ]
         ];
     }
@@ -72,7 +72,8 @@ class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMappi
             $row->jenis,
             $row->satuan,
             $row->harga_terendah,
-            $row->persedian,
+            $row->harga_grosir,
+            $row->harga_kios,
         ];
     }
 
@@ -90,7 +91,7 @@ class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMappi
         $sheet->getStyle('A1:A3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         // Styling untuk header tabel (sekarang di baris 5)
-        $sheet->getStyle('A5:F5')->applyFromArray([
+        $sheet->getStyle('A5:G5')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFFFF'],
@@ -103,13 +104,15 @@ class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMappi
 
         // Menambahkan border ke seluruh tabel data
         if ($this->totalRows > 5) {
-            $sheet->getStyle('A5:F' . $this->totalRows)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $sheet->getStyle('A5:G' . $this->totalRows)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         }
 
         // Terapkan format angka untuk kolom harga
         return [
             // Data dimulai dari baris ke-6
             'E' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0']],
+            'F' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0']],
+            'G' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0']],
         ];
     }
 

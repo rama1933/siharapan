@@ -45,7 +45,10 @@ class HargaKandanganImport implements ToModel, WithCalculatedFormulas
                 'jenis' => $row[2],
                 'satuan' => $row[3],
                 'harga_terendah' => $row[4],
-                'persedian' => $row[5],
+                'harga_grosir' => $row[5],
+                'harga_kios' => $row[6],
+                'persedian' => '-',
+                'ketersediaan' => $row[7],
                 'tanggal' => $this->tanggal
             ]);
         }

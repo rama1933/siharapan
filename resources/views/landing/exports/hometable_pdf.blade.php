@@ -117,7 +117,9 @@
                     <th>Nama</th>
                     <th>Jenis</th>
                     <th>Satuan</th>
-                    <th class="text-right">Harga</th>
+                    <th>Harga Eceran</th>
+                    <th>Harga Grosir</th>
+                    <th>Harga Kios Pangan</th>
                 </tr>
             </thead>
             <tbody>
@@ -127,6 +129,8 @@
                         <td>{{ $item->jenis }}</td>
                         <td>{{ $item->satuan }}</td>
                         <td class="text-right">Rp. {{ number_format($item->harga_terendah, 0, ',', '.') }}</td>
+                        <td class="text-right">Rp. {{ number_format($item->harga_grosir, 0, ',', '.') }}</td>
+                        <td class="text-right">Rp. {{ number_format($item->harga_kios, 0, ',', '.') }}</td>
                     </tr>
                 @empty
                     <tr>

@@ -47,20 +47,28 @@ class HargaController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('tanggal', function ($data) use ($request) {
-            $tanggal = date('d-m-Y', strtotime($data->tanggal));
-            return $tanggal;
-        })
+                $tanggal = date('d-m-Y', strtotime($data->tanggal));
+                return $tanggal;
+            })
             ->addColumn('harga_terendah', function ($data) use ($request) {
-            $harga_terendah = 'Rp. ' . number_format($data->harga_terendah, 0, ',', '.');
-            return $harga_terendah;
-        })
+                $harga_terendah = 'Rp. ' . number_format($data->harga_terendah, 0, ',', '.');
+                return $harga_terendah;
+            })
+            ->addColumn('harga_grosir', function ($data) use ($request) {
+                $harga_grosir = 'Rp. ' . number_format($data->harga_grosir, 0, ',', '.');
+                return $harga_grosir;
+            })
+            ->addColumn('harga_kios', function ($data) use ($request) {
+                $harga_kios = 'Rp. ' . number_format($data->harga_kios, 0, ',', '.');
+                return $harga_kios;
+            })
 
             ->addColumn('button', function ($data) use ($request) {
-            return '
+                return '
                                         <button onclick="edit(' . $data->id . ')" data-toggle="modal" data-target="#modal-edit" class="btn btn-sm btn-flat btn-primary my-2"><i class="fa fa-edit"></i></button>
                                         <button onclick="deletebtn(' . $data->id . ')" class="btn btn-sm btn-flat btn-danger my-2"><i class="fa fa-trash"></i></button>
                                     ';
-        })
+            })
 
             ->rawColumns(['button', 'tanggal', 'harga_terendah'])
             ->make(true);
@@ -109,8 +117,7 @@ class HargaController extends Controller
                 "status" => "success",
                 "messages" => "Berhasil Menghapus Data",
             ]);
-        }
-        else {
+        } else {
             return response()->json([
                 "status" => "failed",
                 "messages" => "Gagal Menghapus Data",
