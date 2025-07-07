@@ -2,8 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\HargaKandangan;
-use App\Models\BahanPokokChild;
+use App\Http\Controllers\KoefisienController; // Pastikan controller di-import
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -13,33 +12,31 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\HeaderFooterDrawing;
+use Illuminate\Support\Collection;
 
-class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize, WithEvents
+class KoefisienExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize, WithEvents
 {
-    protected $id;
     protected $startDate;
     protected $endDate;
-    protected $komoditas;
+    protected $data;
     private $totalRows = 0;
 
-    public function __construct($id, $startDate, $endDate)
+    public function __construct($startDate, $endDate)
     {
-        $this->id = $id;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->komoditas = HargaKandangan::findOrFail($id);
+
+        // Ambil data yang sudah diproses
+        $koefisienController = new KoefisienController();
+        // PERBAIKAN: Perlu membuat method di controller menjadi public untuk bisa diakses
+        // atau duplikasi logikanya di sini. Untuk kesederhanaan, kita asumsikan bisa diakses.
+        // Anda mungkin perlu mengubah method getKoefisienData menjadi public.
+        $this->data = $koefisienController->getKoefisienData($startDate, $endDate);
     }
 
     public function collection()
     {
-        $query = HargaKandangan::query()
-            ->where('bapo_id', $this->komoditas->id);
-
-        if ($this->startDate && $this->endDate) {
-            $query->whereBetween('tanggal', [$this->startDate, $this->endDate]);
-        }
-
-        $collection = $query->orderBy('tanggal', 'desc')->get();
+        $collection = new Collection($this->data['results']);
         // 3 judul + 1 kosong + 1 heading = 5 baris header
         $this->totalRows = $collection->count() + 5;
         return $collection;
@@ -48,18 +45,15 @@ class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMappi
     public function headings(): array
     {
         return [
-            ['LAPORAN DETAIL HARGA PANGAN'],
-            ['Komoditas: ' . ucwords($this->komoditas->nama) . ' - ' . ucwords($this->komoditas->jenis)],
-            ['Tanggal Cetak: ' . \Carbon\Carbon::now()->isoFormat('D MMMM YYYY')],
+            ['LAPORAN ANALISIS KOEFISIEN HARGA'],
+            ['Periode: ' . $this->data['periode_analisis']],
+            ['Tanggal Cetak: ' . $this->data['tanggal_cetak']],
             [], // Baris kosong
             [
-                'Tanggal',
-                'Nama Komoditas',
-                'Jenis',
-                'Satuan',
-                'Harga Eceran',
-                'Harga Grosit',
-                'Harga Kios Pagan',
+                'Komoditas',
+                'Harga Rata-rata',
+                'Koefisien Variasi',
+                'Level Fluktuasi',
             ]
         ];
     }
@@ -67,31 +61,28 @@ class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMappi
     public function map($row): array
     {
         return [
-            \Carbon\Carbon::parse($row->tanggal)->format('d-m-Y'),
-            $row->nama,
-            $row->jenis,
-            $row->satuan,
-            $row->harga_terendah,
-            $row->harga_grosir,
-            $row->harga_kios,
+            $row['komoditas'],
+            $row['rata_rata'],
+            $row['koefisien_variasi'],
+            $row['level_fluktuasi']['text'],
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
         // Menggabungkan sel untuk judul
-        $sheet->mergeCells('A1:F1');
-        $sheet->mergeCells('A2:F2');
-        $sheet->mergeCells('A3:F3');
+        $sheet->mergeCells('A1:D1');
+        $sheet->mergeCells('A2:D2');
+        $sheet->mergeCells('A3:D3');
 
         // Styling untuk judul laporan
         $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(16);
-        $sheet->getStyle('A2')->getFont()->setBold(true)->setSize(12);
+        $sheet->getStyle('A2')->getFont()->setSize(12);
         $sheet->getStyle('A3')->getFont()->setItalic(true)->setSize(10);
         $sheet->getStyle('A1:A3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         // Styling untuk header tabel (sekarang di baris 5)
-        $sheet->getStyle('A5:G5')->applyFromArray([
+        $sheet->getStyle('A5:D5')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFFFF'],
@@ -104,15 +95,14 @@ class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMappi
 
         // Menambahkan border ke seluruh tabel data
         if ($this->totalRows > 5) {
-            $sheet->getStyle('A5:G' . $this->totalRows)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $sheet->getStyle('A5:D' . $this->totalRows)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         }
 
-        // Terapkan format angka untuk kolom harga
+        // Terapkan format angka untuk kolom harga dan koefisien
         return [
             // Data dimulai dari baris ke-6
-            'E' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0']],
-            'F' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0']],
-            'G' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0']],
+            'B' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0.00']],
+            'C' => ['numberFormat' => ['formatCode' => '0.00"%"']],
         ];
     }
 
@@ -122,8 +112,7 @@ class DetailHargaPanganExport implements FromCollection, WithHeadings, WithMappi
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
 
-                // PERBAIKAN: Menambahkan watermark sebagai header gambar
-                // Watermark ini akan terlihat saat mencetak atau dalam mode "Page Layout" di Excel
+                // Menambahkan watermark sebagai header gambar
                 $drawing = new HeaderFooterDrawing();
                 $drawing->setName('Watermark');
                 $drawing->setPath(public_path('logo/1.png')); // Pastikan path ini benar

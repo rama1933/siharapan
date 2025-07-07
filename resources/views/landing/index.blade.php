@@ -125,7 +125,9 @@
                                 <th scope="col" class="px-6 py-3">Nama</th>
                                 <th scope="col" class="px-6 py-3">Jenis</th>
                                 <th scope="col" class="px-6 py-3">Satuan</th>
-                                <th scope="col" class="px-6 py-3">Harga</th>
+                                <th scope="col" class="px-6 py-3">Harga Eceran</th>
+                                <th scope="col" class="px-6 py-3">Harga Grosir</th>
+                                <th scope="col" class="px-6 py-3">Harga Kios Pangan</th>
                                 {{-- <th scope="col" class="px-6 py-3 text-center">Perubahan (24h)</th> --}}
                                 <th scope="col" class="px-6 py-3 text-center">Detail</th>
                             </tr>
@@ -138,6 +140,10 @@
                                     <td class="px-6 py-4">{{ $item->satuan }}</td>
                                     <td class="px-6 py-4 font-semibold">Rp.
                                         {{ number_format($item->harga_terendah, 0, ',', '.') }}</td>
+                                    <td class="px-6 py-4 font-semibold">Rp.
+                                        {{ number_format($item->harga_grosir, 0, ',', '.') }}</td>
+                                    <td class="px-6 py-4 font-semibold">Rp.
+                                        {{ number_format($item->harga_kios, 0, ',', '.') }}</td>
                                     {{-- <td class="px-6 py-4 text-center">
                                         @php $perubahan = rand(-1, 1); @endphp
                                         @if ($perubahan > 0)

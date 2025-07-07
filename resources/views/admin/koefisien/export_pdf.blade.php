@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Laporan Harga Pangan Harian</title>
+    <title>Laporan Koefisien Harga</title>
     <style>
         @page {
             margin: 0cm 0cm;
@@ -95,51 +95,39 @@
 </head>
 
 <body>
-    <div class="watermark">SIHARAPAN</div>
-
-    <header>
-        {{-- Anda bisa menambahkan logo di sini jika perlu --}}
-    </header>
 
     <footer>
         Laporan ini dibuat oleh Sistem Informasi Harga Pangan (SIHARAPAN) &copy; {{ date('Y') }}
     </footer>
 
-    <main>
-        <div class="report-title">
-            <h2>Laporan Harga Pangan Harian</h2>
-            <p><strong>Tanggal Cetak:</strong> {{ $tanggal_cetak }}</p>
-        </div>
-
-        <table>
-            <thead>
+    <h2 style="text-align: center;">Laporan Analisis Koefisien Harga Pangan</h2>
+    <p><strong>Periode:</strong> {{ $periode_analisis }}</p>
+    <p><strong>Tanggal Cetak:</strong> {{ $tanggal_cetak }}</p>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Komoditas</th>
+                <th>Harga Rata-rata</th>
+                <th>Koefisien Variasi</th>
+                <th>Level Fluktuasi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($results as $item)
                 <tr>
-                    <th>Nama</th>
-                    <th>Jenis</th>
-                    <th>Satuan</th>
-                    <th>Harga Eceran</th>
-                    <th>Harga Grosir</th>
-                    <th>Harga Kios Pangan</th>
+                    <td>{{ $item['komoditas'] }}</td>
+                    <td>{{ $item['rata_rata'] }}</td>
+                    <td>{{ $item['koefisien_variasi'] }}</td>
+                    <td>{{ $item['level_fluktuasi']['text'] }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @forelse($table as $item)
-                    <tr>
-                        <td>{{ $item->nama }}</td>
-                        <td>{{ $item->jenis }}</td>
-                        <td>{{ $item->satuan }}</td>
-                        <td class="text-right">Rp. {{ number_format($item->harga_terendah, 0, ',', '.') }}</td>
-                        <td class="text-right">Rp. {{ number_format($item->harga_grosir, 0, ',', '.') }}</td>
-                        <td class="text-right">Rp. {{ number_format($item->harga_kios, 0, ',', '.') }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" style="text-align: center;">Tidak ada data yang tersedia.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </main>
+            @empty
+                <tr>
+                    <td colspan="4" style="text-align: center;">Tidak ada data.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </body>
 
 </html>

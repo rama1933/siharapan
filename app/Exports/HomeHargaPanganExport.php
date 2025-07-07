@@ -43,7 +43,9 @@ class HomeHargaPanganExport implements FromCollection, WithHeadings, WithMapping
                 'Nama Komoditas',
                 'Jenis',
                 'Satuan',
-                'Harga',
+                'Harga Eceran',
+                'Harga Grosit',
+                'Harga Kios Pagan',
                 'Tanggal Update',
             ]
         ];
@@ -56,6 +58,8 @@ class HomeHargaPanganExport implements FromCollection, WithHeadings, WithMapping
             $row->jenis,
             $row->satuan,
             $row->harga_terendah,
+            $row->harga_grosir,
+            $row->harga_kios,
             \Carbon\Carbon::parse($row->tanggal)->format('d-m-Y'),
         ];
     }
@@ -74,7 +78,7 @@ class HomeHargaPanganExport implements FromCollection, WithHeadings, WithMapping
         $sheet->getStyle('A1:A3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
         // Styling untuk header tabel (baris 5)
-        $sheet->getStyle('A5:E5')->applyFromArray([
+        $sheet->getStyle('A5:G5')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFFFF'],
@@ -87,13 +91,15 @@ class HomeHargaPanganExport implements FromCollection, WithHeadings, WithMapping
 
         // Menambahkan border ke seluruh tabel data
         if ($this->totalRows > 5) {
-            $sheet->getStyle('A5:E' . $this->totalRows)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $sheet->getStyle('A5:G' . $this->totalRows)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
         }
 
         // Terapkan format angka untuk kolom harga
         return [
             // Data dimulai dari baris ke-6
             'D' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0']],
+            'E' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0']],
+            'F' => ['numberFormat' => ['formatCode' => '"Rp. "#,##0']],
         ];
     }
 

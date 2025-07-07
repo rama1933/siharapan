@@ -46,7 +46,7 @@ class LandingController extends Controller
         $data['table'] = $this->service->getAll();
         $data['bapo'] = Bapo::with('komoditi')->get();
         $data['tanggal_update'] = HargaKandangan::latest('tanggal')->first();
-        $data['berita'] = Berita::limit(6)->get();
+        $data['berita'] = Berita::where('status', 'Publish')->limit(6)->get();
 
         // --- Data untuk Statistik Pengunjung ---
         $this->visit->visitsCounter()->forceIncrement();
@@ -358,7 +358,13 @@ class LandingController extends Controller
             ->editColumn('harga_terendah', function ($row) {
                 return 'Rp ' . number_format($row->harga_terendah, 0, ',', '.');
             })
-            ->rawColumns(['harga_terendah'])
+            ->editColumn('harga_grosir', function ($row) {
+                return 'Rp ' . number_format($row->harga_grosir, 0, ',', '.');
+            })
+            ->editColumn('harga_kios', function ($row) {
+                return 'Rp ' . number_format($row->harga_kios, 0, ',', '.');
+            })
+            ->rawColumns(['harga_terendah', 'harga_grosir', 'harga_kios'])
             ->make(true);
     }
 

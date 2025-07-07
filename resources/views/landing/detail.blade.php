@@ -121,6 +121,10 @@
                                 <th class="px-6 py-3">Jenis</th>
                                 <th class="px-6 py-3">Satuan</th>
                                 <th class="px-6 py-3">Harga</th>
+                                <th class="px-6 py-3">
+                                    Harga Grosir</th>
+                                <th class="px-6 py-3">
+                                    Harga Kios Pangan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -188,6 +192,14 @@
                         {
                             data: 'harga_terendah',
                             name: 'harga_terendah'
+                        },
+                        {
+                            data: 'harga_grosir',
+                            name: 'harga_grosir',
+                        },
+                        {
+                            data: 'harga_kios',
+                            name: 'harga_kios'
                         },
                     ]
                 });

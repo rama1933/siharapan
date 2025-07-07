@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KoefisienController;
 
 
 
@@ -93,6 +94,11 @@ Route::middleware('role:admin')->group(function () {
                     Route::post('/update', [App\Http\Controllers\HargaController::class, 'update'])->name('harga.kandangan.update');
                 }
             );
+
+            Route::get('/koefisien-harga', [KoefisienController::class, 'index'])->name('koefisien.index');
+            Route::post('/koefisien/calculate', [KoefisienController::class, 'calculate'])->name('koefisien.calculate');
+            Route::get('/koefisien/pdf', [KoefisienController::class, 'exportPdf'])->name('koefisien.export.pdf');
+            Route::get('/koefisien/excel', [KoefisienController::class, 'exportExcel'])->name('koefisien.export.excel');
         }
     );
 });

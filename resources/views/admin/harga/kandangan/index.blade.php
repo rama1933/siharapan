@@ -101,9 +101,13 @@
                                 <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     Satuan</th>
                                 <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Harga</th>
+                                    Harga Eceran</th>
                                 <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                    Persediaan</th>
+                                    Harga Grosir</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Harga Kios Pangan</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    ketersediaan (ton)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,7 +147,7 @@
                                         </li>
                                         <li>Pastikan format pengisian sudah sesuai dengan template.</li>
                                         <li>Pastikan semua kolom harga sudah terisi.</li>
-                                        <li><a href="{{ asset('doc/format siharapan.xlsx') }}"
+                                        <li><a href="{{ asset('doc/format import siharapan.xlsx') }}"
                                                 class="text-blue-600 hover:underline font-medium">Download Template Format
                                                 di Sini</a></li>
                                     </ul>
@@ -260,8 +264,16 @@
                         name: 'harga_terendah'
                     },
                     {
-                        data: 'persedian',
-                        name: 'persedian'
+                        data: 'harga_grosir',
+                        name: 'harga_grosir'
+                    },
+                    {
+                        data: 'harga_kios',
+                        name: 'harga_kios'
+                    },
+                    {
+                        data: 'ketersediaan',
+                        name: 'ketersediaan'
                     }
                 ]
             });

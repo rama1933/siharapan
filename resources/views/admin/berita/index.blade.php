@@ -66,7 +66,28 @@
 @endpush
 
 @section('content')
-    <div x-data="{ createModalOpen: false, editModalOpen: false, editData: {} }" @close-modals.window="createModalOpen = false; editModalOpen = false">
+    <div x-data="{
+        createModalOpen: false,
+        editModalOpen: false,
+        editData: {},
+        // PERBAIKAN: Menambahkan fungsi untuk membuka modal edit
+        initEditModal(id) {
+            $.ajax({
+                url: `/berita/show?id=${id}`,
+                success: (res) => {
+                    this.editData = res;
+                    this.editModalOpen = true;
+                    // Gunakan $nextTick untuk memastikan modal sudah dirender
+                    this.$nextTick(() => {
+                        $('#summernoteEdit').summernote('code', res.berita);
+                        // Set nilai lain secara manual jika diperlukan
+                        $('#status_edit').val(res.status);
+                        $('#post_at_edit').val(res.post_at_formatted);
+                    });
+                }
+            });
+        }
+    }" @close-modals.window="createModalOpen = false; editModalOpen = false">
         <!-- Judul Halaman dan Tombol Tambah -->
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-800">Manajemen Berita</h1>
@@ -94,6 +115,10 @@
                                     Berita</th>
                                 <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     Foto</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tgl
+                                    Posting</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                    Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
                                     Aksi</th>
                             </tr>
@@ -119,22 +144,46 @@
                     <h3 class="text-lg font-medium leading-6 text-gray-900">Tambah Berita Baru</h3>
                     <form id="form-create" class="mt-4 space-y-4">
                         @csrf
-                        <div>
-                            <label for="judul" class="block text-sm font-medium text-gray-700">Judul</label>
-                            <input type="text" name="judul" id="judul"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-green-700 focus:border-brand-green-700 sm:text-sm"
-                                required>
+                        {{-- PERBAIKAN: Menata ulang form dengan grid dan styling konsisten --}}
+                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-6">
+                                <label for="judul" class="block text-sm font-medium text-gray-700">Judul</label>
+                                <input type="text" name="judul" id="judul"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-green-700 focus:border-brand-green-700 sm:text-sm"
+                                    required>
+                            </div>
+
+                            <div class="sm:col-span-3">
+                                <label for="post_at" class="block text-sm font-medium text-gray-700">Tanggal
+                                    Posting</label>
+                                <input type="date" name="post_at" id="post_at"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-green-700 focus:border-brand-green-700 sm:text-sm"
+                                    required>
+                            </div>
+
+                            <div class="sm:col-span-3">
+                                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                                <select name="status" id="status"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-green-700 focus:border-brand-green-700 sm:text-sm"
+                                    required>
+                                    <option value="Publish">Publish</option>
+                                    <option value="Unpublish">Unpublish</option>
+                                </select>
+                            </div>
+
+                            <div class="sm:col-span-6">
+                                <label for="berita" class="block text-sm font-medium text-gray-700">Isi Berita</label>
+                                <textarea id="summernote" name="berita"></textarea>
+                            </div>
+
+                            <div class="sm:col-span-6">
+                                <label for="path" class="block text-sm font-medium text-gray-700">Foto</label>
+                                <input type="file" name="path" id="path"
+                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200"
+                                    required>
+                            </div>
                         </div>
-                        <div>
-                            <label for="berita" class="block text-sm font-medium text-gray-700">Berita</label>
-                            <textarea id="summernote" name="berita" class="form-control"></textarea>
-                        </div>
-                        <div>
-                            <label for="path" class="block text-sm font-medium text-gray-700">Foto</label>
-                            <input type="file" name="path" id="path"
-                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200"
-                                required>
-                        </div>
+
                         <div class="pt-4 flex justify-end space-x-2">
                             <button type="button" @click="createModalOpen = false"
                                 class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Batal</button>
@@ -146,7 +195,6 @@
             </div>
         </div>
 
-        <!-- Modal Edit Berita -->
         <div x-show="editModalOpen" @keydown.escape.window="editModalOpen = false"
             class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
             <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
@@ -159,21 +207,40 @@
                     <form id="form-edit" class="mt-4 space-y-4">
                         @csrf
                         <input type="hidden" name="id" x-model="editData.id">
-                        <div>
-                            <label for="judulEdit" class="block text-sm font-medium text-gray-700">Judul</label>
-                            <input type="text" name="judul" id="judulEdit" x-model="editData.judul"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-green-700 focus:border-brand-green-700 sm:text-sm"
-                                required>
-                        </div>
-                        <div>
-                            <label for="summernoteEdit" class="block text-sm font-medium text-gray-700">Berita</label>
-                            <textarea id="summernoteEdit" name="berita" class="form-control"></textarea>
-                        </div>
-                        <div>
-                            <label for="pathEdit" class="block text-sm font-medium text-gray-700">Ganti Foto
-                                (Opsional)</label>
-                            <input type="file" name="path" id="pathEdit"
-                                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200">
+                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-6">
+                                <label for="judulEdit" class="block text-sm font-medium text-gray-700">Judul</label>
+                                <input type="text" name="judul" id="judulEdit" x-model="editData.judul"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-green-700 focus:border-brand-green-700 sm:text-sm"
+                                    required>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="post_at_edit" class="block text-sm font-medium text-gray-700">Tanggal
+                                    Posting</label>
+                                <input type="date" name="post_at" id="post_at_edit" x-model="editData.post_at"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-green-700 focus:border-brand-green-700 sm:text-sm"
+                                    required>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label for="status_edit" class="block text-sm font-medium text-gray-700">Status</label>
+                                <select name="status" id="status_edit" x-model="editData.status"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-green-700 focus:border-brand-green-700 sm:text-sm"
+                                    required>
+                                    <option value="Publish">Publish</option>
+                                    <option value="Unpublish">Unpublish</option>
+                                </select>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label for="summernoteEdit" class="block text-sm font-medium text-gray-700">Isi
+                                    Berita</label>
+                                <textarea id="summernoteEdit" name="berita"></textarea>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label for="pathEdit" class="block text-sm font-medium text-gray-700">Ganti Foto
+                                    (Opsional)</label>
+                                <input type="file" name="path" id="pathEdit"
+                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200">
+                            </div>
                         </div>
                         <div class="pt-4 flex justify-end space-x-2">
                             <button type="button" @click="editModalOpen = false"
@@ -199,18 +266,12 @@
 
     <script>
         function editBerita(id) {
-            $.ajax({
-                url: `/berita/show?id=${id}`,
-                success: function(res) {
-                    const alpineComponent = document.querySelector('[x-data]').__x;
-                    alpineComponent.editData = res;
-                    $('#summernoteEdit').summernote('code', res.berita);
-                    alpineComponent.editModalOpen = true;
-                }
-            });
+            const alpineComponent = document.querySelector('[x-data]').__x;
+            alpineComponent.initEditModal(id);
         }
 
-        function deleteBerita(id) {
+        // Fungsi global untuk menghapus data
+        function deleteSatuan(id) {
             Swal.fire({
                 title: 'Anda Yakin?',
                 text: "Data yang dihapus tidak dapat dikembalikan!",
@@ -223,23 +284,24 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: `/berita/delete`,
+                        url: `/admin/berita/delete`,
                         method: 'POST',
                         data: {
                             id: id,
                             _token: '{{ csrf_token() }}'
                         },
                         success: function() {
-                            $('#berita-table').DataTable().ajax.reload();
+                            $('#satuan-table').DataTable().ajax.reload();
                             Toast.fire({
                                 icon: 'success',
-                                title: 'Berita berhasil dihapus.'
+                                title: 'Data berhasil dihapus.'
                             });
                         }
                     });
                 }
             })
         }
+
 
         const Toast = Swal.mixin({
             toast: true,
@@ -286,6 +348,14 @@
                         name: 'foto',
                         orderable: false,
                         searchable: false
+                    },
+                    {
+                        data: 'tanggal',
+                        name: 'tanggal'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'button',

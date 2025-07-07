@@ -83,6 +83,15 @@
                         </svg>
                         <span class="mx-3 font-medium">Harga</span>
                     </a>
+                    <a class="flex items-center px-4 py-3 mt-2 rounded-lg {{ request()->routeIs('koefisien.*') ? 'bg-brand-gold text-white shadow-lg' : 'text-gray-300 hover:bg-brand-green-800 hover:text-white' }} transition-colors duration-200"
+                        href="{{ route('koefisien.index') }}">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1.646a4.002 4.002 0 00-4-3.996 4.002 4.002 0 00-4 3.996v1.646m8 0h-8m8 0c1.657 0 3 .895 3 2s-1.343 2-3 2m0 8c-1.11 0-2.08-.402-2.599-1M12 16v1m0-1v-.01M12 18v1.646a4.002 4.002 0 004 3.996 4.002 4.002 0 004-3.996v-1.646m-8 0h8m-8 0c-1.657 0-3-.895-3-2s1.343-2 3-2" />
+                        </svg>
+                        <span class="mx-3 font-medium">Koefisien</span>
+                    </a>
                 </div>
 
                 <div class="mt-6">
