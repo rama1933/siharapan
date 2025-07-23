@@ -178,7 +178,7 @@ class LandingController extends Controller
 
     public function indexberita()
     {
-        $berita = Berita::paginate(10);
+        $berita = Berita::where('status', 'Publish')->paginate(10);
         // dd($data['visit_count_week']);
         return view('landing.berita', compact('berita'));
     }

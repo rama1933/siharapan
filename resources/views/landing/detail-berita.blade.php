@@ -12,14 +12,15 @@
             <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
 
                 <!-- Gambar Utama Berita -->
-                <img src="{{ asset($berita->path) }}" alt="{{ $berita->judul }}" class="w-full h-64 md:h-96 object-cover">
+                <img src="{{ asset('storage/' . $berita->path) }}" alt="{{ $berita->judul }}"
+                    class="w-full h-64 md:h-96 object-cover">
 
                 <div class="p-6 sm:p-8 md:p-12">
 
                     <!-- Judul dan Meta Informasi -->
                     <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">{{ $berita->judul }}</h1>
                     <p class="mt-2 text-gray-500">
-                        Dipublikasikan pada {{ \Carbon\Carbon::parse($berita->created_at)->format('d F Y') }}
+                        Dipublikasikan pada {{ \Carbon\Carbon::parse($berita->post_at)->format('d F Y') }}
                     </p>
 
                     <hr class="my-6">
