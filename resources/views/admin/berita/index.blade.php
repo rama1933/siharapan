@@ -70,24 +70,46 @@
         createModalOpen: false,
         editModalOpen: false,
         editData: {},
-        // PERBAIKAN: Menambahkan fungsi untuk membuka modal edit
-        initEditModal(id) {
+        openEditModal(id) {
             $.ajax({
                 url: `/berita/show?id=${id}`,
                 success: (res) => {
                     this.editData = res;
-                    this.editModalOpen = true;
-                    // Gunakan $nextTick untuk memastikan modal sudah dirender
                     this.$nextTick(() => {
-                        $('#summernoteEdit').summernote('code', res.berita);
-                        // Set nilai lain secara manual jika diperlukan
-                        $('#status_edit').val(res.status);
-                        $('#post_at_edit').val(res.post_at_formatted);
+                        this.editModalOpen = true;
                     });
                 }
             });
         }
-    }" @close-modals.window="createModalOpen = false; editModalOpen = false">
+    }" @close-modals.window="createModalOpen = false; editModalOpen = false" x-init="// Watcher untuk modal Tambah Berita
+    $watch('createModalOpen', isOpen => {
+        if (!isOpen) {
+            // Saat modal ditutup, reset form dan summernote
+            document.getElementById('form-create').reset();
+            $('#summernote').summernote('code', '');
+        }
+    });
+    
+    // Watcher untuk modal Edit Berita
+    $watch('editModalOpen', isOpen => {
+        if (isOpen) {
+            // Saat modal dibuka, inisialisasi summernote
+            $nextTick(() => {
+                $('#summernoteEdit').summernote({
+                    height: 200,
+                    focus: true,
+                    callbacks: {
+                        onInit: function() {
+                            $('#summernoteEdit').summernote('code', $data.editData.berita || '');
+                        }
+                    }
+                });
+            });
+        } else {
+            // PERBAIKAN: Muat ulang halaman saat modal ditutup untuk memastikan reset total.
+            location.reload();
+        }
+    });">
         <!-- Judul Halaman dan Tombol Tambah -->
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-800">Manajemen Berita</h1>
@@ -144,7 +166,6 @@
                     <h3 class="text-lg font-medium leading-6 text-gray-900">Tambah Berita Baru</h3>
                     <form id="form-create" class="mt-4 space-y-4">
                         @csrf
-                        {{-- PERBAIKAN: Menata ulang form dengan grid dan styling konsisten --}}
                         <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                             <div class="sm:col-span-6">
                                 <label for="judul" class="block text-sm font-medium text-gray-700">Judul</label>
@@ -195,6 +216,7 @@
             </div>
         </div>
 
+        <!-- Modal Edit Berita -->
         <div x-show="editModalOpen" @keydown.escape.window="editModalOpen = false"
             class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
             <div class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
@@ -265,13 +287,14 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
     <script>
+        // Fungsi untuk trigger modal edit dari AlpineJS
         function editBerita(id) {
             const alpineComponent = document.querySelector('[x-data]').__x;
-            alpineComponent.initEditModal(id);
+            alpineComponent.openEditModal(id);
         }
 
         // Fungsi global untuk menghapus data
-        function deleteSatuan(id) {
+        function deleteBerita(id) {
             Swal.fire({
                 title: 'Anda Yakin?',
                 text: "Data yang dihapus tidak dapat dikembalikan!",
@@ -284,24 +307,29 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: `/admin/berita/delete`,
+                        url: `/berita/delete`, // Pastikan URL ini sesuai dengan route Anda
                         method: 'POST',
                         data: {
                             id: id,
                             _token: '{{ csrf_token() }}'
                         },
                         success: function() {
-                            $('#satuan-table').DataTable().ajax.reload();
+                            $('#berita-table').DataTable().ajax.reload();
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Data berhasil dihapus.'
+                            });
+                        },
+                        error: function() {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Gagal menghapus data.'
                             });
                         }
                     });
                 }
             })
         }
-
 
         const Toast = Swal.mixin({
             toast: true,
@@ -316,13 +344,11 @@
         });
 
         $(document).ready(function() {
-            // Inisialisasi Summernote
+            // Inisialisasi Summernote untuk form TAMBAH
             $('#summernote').summernote({
                 height: 200
             });
-            $('#summernoteEdit').summernote({
-                height: 200
-            });
+            // Inisialisasi untuk form EDIT dipindahkan ke AlpineJS
 
             // Inisialisasi DataTables
             $('#berita-table').DataTable({
@@ -380,8 +406,7 @@
                                 title: 'Berita berhasil ditambahkan.'
                             });
                             window.dispatchEvent(new CustomEvent('close-modals'));
-                            $('#form-create')[0].reset();
-                            $('#summernote').summernote('code', '');
+                            // Reset form sekarang ditangani oleh watcher AlpineJS
                         } else {
                             Toast.fire({
                                 icon: 'error',
@@ -395,6 +420,9 @@
             // Submit form edit
             $('#form-edit').on('submit', function(e) {
                 e.preventDefault();
+                // PERBAIKAN: Sinkronkan konten Summernote ke textarea sebelum submit
+                $('#summernoteEdit').val($('#summernoteEdit').summernote('code'));
+
                 $(this).ajaxSubmit({
                     url: "{{ route('berita.update') }}",
                     type: 'POST',
@@ -405,6 +433,7 @@
                                 icon: 'success',
                                 title: 'Berita berhasil diperbarui.'
                             });
+                            // Event 'close-modals' akan memanggil watcher untuk cleanup
                             window.dispatchEvent(new CustomEvent('close-modals'));
                         } else {
                             Toast.fire({
