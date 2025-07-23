@@ -199,7 +199,7 @@
                     @foreach ($berita as $item)
                         <div
                             class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-transform hover:-translate-y-2">
-                            <img src="{{ asset($item->path) }}" alt="{{ $item->judul }}"
+                            <img src="{{ asset('storage/' . $item->path) }}" alt="{{ $item->judul }}"
                                 class="w-full h-48 object-cover">
                             <div class="p-6 flex flex-col flex-grow">
                                 <h3 class="text-lg font-bold text-gray-900 mb-2">{{ Str::limit($item->judul, 50) }}</h3>

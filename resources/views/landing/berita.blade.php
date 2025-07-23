@@ -22,7 +22,8 @@
                         class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-transform hover:-translate-y-2">
                         {{-- Gambar Berita --}}
                         <a href="{{ route('landing.berita.detail', ['id' => $data->id]) }}">
-                            <img src="{{ asset($data->path) }}" alt="{{ $data->judul }}" class="w-full h-48 object-cover">
+                            <img src="{{ asset('storage/' . $data->path) }}" alt="{{ $data->judul }}"
+                                class="w-full h-48 object-cover">
                         </a>
 
                         {{-- Konten Kartu --}}
