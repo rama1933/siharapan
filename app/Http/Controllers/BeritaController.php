@@ -32,7 +32,7 @@ class BeritaController extends Controller
             ->addIndexColumn()
             ->addColumn('foto', function ($row) {
                 // Membuat kolom foto dengan tag <img>
-                $url = asset($row->path);
+                $url = asset('storage/' . $row->path);
                 return '<img src="' . $url . '" border="0" width="100" class="img-fluid rounded" align="center" />';
             })
             ->editColumn('berita', function ($row) {
