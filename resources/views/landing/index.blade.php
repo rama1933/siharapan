@@ -244,6 +244,23 @@
                 </div>
             </div>
 
+            <div id="barcode-channel"
+                class="bg-gradient-to-br from-brand-green-800 to-brand-green-900 text-white rounded-2xl shadow-lg p-8 sm:p-12">
+                <div class="flex flex-col md:flex-row items-center justify-center gap-8 text-center md:text-left">
+                    <div class="flex-shrink-0 bg-white p-2 rounded-lg">
+                        <img src="{{ asset('logo/BARCODE CHANNEL.png') }}" alt="Barcode Saluran WhatsApp SIHARAPAN"
+                            class="w-40 h-40">
+                    </div>
+                    <div class="md:w-2/3">
+                        <h3 class="text-2xl font-bold text-brand-gold uppercase tracking-wider">Tetap Terhubung</h3>
+                        <p class="mt-2 text-lg text-gray-200">
+                            Dapatkan informasi harga pangan secara real-time. Scan barcode untuk mengikuti saluran WhatsApp
+                            kami dan dapatkan update terbaru langsung ke ponsel Anda.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 @endsection

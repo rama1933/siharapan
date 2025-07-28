@@ -46,7 +46,7 @@ class LandingController extends Controller
         $data['table'] = $this->service->getAll();
         $data['bapo'] = Bapo::with('komoditi')->get();
         $data['tanggal_update'] = HargaKandangan::latest('tanggal')->first();
-        $data['berita'] = Berita::where('status', 'Publish')->limit(6)->get();
+        $data['berita'] = Berita::orderBy('post_at', 'DESC')->where('status', 'Publish')->limit(6)->get();
 
         // --- Data untuk Statistik Pengunjung ---
         $this->visit->visitsCounter()->forceIncrement();
@@ -178,7 +178,7 @@ class LandingController extends Controller
 
     public function indexberita()
     {
-        $berita = Berita::where('status', 'Publish')->paginate(10);
+        $berita = Berita::orderBy('post_at', 'DESC')->where('status', 'Publish')->paginate(10);
         // dd($data['visit_count_week']);
         return view('landing.berita', compact('berita'));
     }
